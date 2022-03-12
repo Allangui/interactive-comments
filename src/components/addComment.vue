@@ -37,8 +37,8 @@
                             "score": 0,
                             "user": {
                                     "image": { 
-                                    "png": "./images/avatars/image-juliusomo.png",
-                                    "webp": "./images/avatars/image-juliusomo.webp"
+                                    "png": this.currentUser.image.png,
+                                    "webp": this.currentUser.image.png,
                                     },
                                 "username": "juliusomo"
                             },
@@ -57,8 +57,8 @@
                             "replyingTo":this.replyingTo,
                             "user": {
                                     "image": { 
-                                    "png": "./images/avatars/image-juliusomo.png",
-                                    "webp": "./images/avatars/image-juliusomo.webp"
+                                    "png": this.currentUser.image.png,
+                                    "webp": this.currentUser.image.png,
                                     },
                                 "username": "juliusomo"
                             },
