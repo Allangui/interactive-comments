@@ -1,36 +1,79 @@
 <template>
     <form :class="onReply ? 'formReply': null ">
-        <textarea v-if="onReply" minlength="3" maxlength="144" required="true" placeholder="Add a comment..." :value="'@'+replyingTo+' '"></textarea>
-        <textarea v-else minlength="3" maxlength="144" required="true" placeholder="Add a comment..." v-model="content"></textarea>
+        <textarea minlength="3" maxlength="144" required="true" placeholder="Add a comment..."  v-model="content"></textarea>
         <img :src="currentUser.image.png" alt="">
-        <button type="submit" class="btnSend" @click="sendAddComment()">send</button>
+        <button type="submit" class="btnSend" @click.prevent="sendAddComment()">send</button>
     </form>
 </template>
 
 <script>
     export default {
-        props: ["currentUser","onReply","replyingTo"],
-        emits: ["sendAddComment"],
+        props: ["currentUser","onReply","replyingTo","replyingToId"],
+        emits: ["sendAddComment","sendAddReply"],
         data() {
             return {
-                content: null
+                content: '',
+                forReplyContent : '',
+            }
+        },
+        mounted () {
+            if(this.onReply){
+                console.log('mounted')
+                this.forReplyContent = '@' + this.replyingTo 
+                this.content = this.forReplyContent 
+            }else {
+                this.content = ''
             }
         },
         methods: {
             sendAddComment() {
-                this.$emit('sendAddComment',{
-                    "content": this.content,
-                    "createdAt": "1 second ago",
-                    "score": 0,
-                    "user": {
-                            "image": { 
-                            "png": "./images/avatars/image-juliusomo.png",
-                            "webp": "./images/avatars/image-juliusomo.webp"
+                if (this.content.length - this.forReplyContent.length > 2){
+                    if(!this.onReply){
+                        console.log('sendcomment')
+                        this.$emit('sendAddComment',{
+                            "id": null, // Trouver un moyen de faire passer l ID au nouveau commentaire
+                            "content": this.content,
+                            "createdAt": "1 second ago",
+                            "score": 0,
+                            "user": {
+                                    "image": { 
+                                    "png": "./images/avatars/image-juliusomo.png",
+                                    "webp": "./images/avatars/image-juliusomo.webp"
+                                    },
+                                "username": "juliusomo"
                             },
-                        "username": "juliusomo"
-                    },
-                    "replies": []
-                })
+                            "replies": []
+                        })
+                        this.content=''
+                }else{
+                    this.content = this.content.replace(this.forReplyContent,'')
+                    console.log('sendreply')
+                    this.$emit('sendAddReply',{
+                        "obj":{
+                            "id": null,
+                            "content":this.content,
+                            "createdAt": "1 second ago",
+                            "score": 0,
+                            "replyingTo":this.replyingTo,
+                            "user": {
+                                    "image": { 
+                                    "png": "./images/avatars/image-juliusomo.png",
+                                    "webp": "./images/avatars/image-juliusomo.webp"
+                                    },
+                                "username": "juliusomo"
+                            },
+                            "replies": []
+                        },
+                        "replyingtoid": this.replyingToId
+                    })
+                }
+                }else{
+                    alert('Minimum 3 caractères')
+                }
+                
+            },
+            getImageUrl(name){
+                return new URL(`../assets/${name}.jpg`, import.meta.url).href
             }
         },
     }

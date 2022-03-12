@@ -32,6 +32,7 @@ main{
         background: white;
         padding:25px;
         margin:0 auto;
+        width:80vw;
         max-width:calc(350px - 50px);
         border-radius: 10px;
         span{
@@ -48,10 +49,11 @@ main{
         }
         .no,.yes{
             font-weight: 700;
-            font-size: 1.1rem;
-            letter-spacing: .6px;
+            font-size: 1rem;
+            letter-spacing: .5px;
             text-transform: uppercase;
             padding: 15px 13px;
+            margin:5px 0;
             border-radius: 10px;
             color:white;
             border: none;

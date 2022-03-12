@@ -1,6 +1,5 @@
 <template>
   <Comment v-for="comment in comments"
-  
   :name="comment.user.username"
   :content="comment.content"
   :date="comment.createdAt"
@@ -11,8 +10,9 @@
   :key="comment.id"
   :currentUser="currentUser"
   @delete="isOpenPopupDelete=true , currentIdDeleted= $event"
+  @sendAddReply="addReply($event)"
   />
-  <AddComment :currentUser="currentUser" @sendAddComment="addComment($event)"/>
+  <AddComment :currentUser="currentUser" @sendAddComment="addComment($event)" />
   <OpenPopupDelete v-if="isOpenPopupDelete" @closePopup="deleteComment($event)"/>
 </template>
 
@@ -34,11 +34,55 @@ export default{
       currentUser: datas.currentUser,
       isOpenPopupDelete:false,
       currentIdDeleted:null,
+      newID:null,
     }
   },
   methods: {
     addComment(obj){
+      this.searchNewId()
+      obj.id = this.newID
       this.comments.push(obj)
+    },
+    addReply(event){
+      console.log('reply in app',event)
+      this.searchNewId()
+      event.obj.id = this.newID
+      for(let i =0;i<this.comments.length;i++){
+        if(this.comments[i].id === event.replyingtoid){
+          console.log('in if loop 1')
+          return this.comments[i].replies.push(event.obj)
+        }else{
+          console.log('in else loop 1')
+          for(let j =0;j<this.comments[i].replies.length;j++){
+          if(this.comments[i].replies[j].id === event.replyingtoid){
+            console.log('in if loop 2')
+            return this.comments[i].replies.push(event.obj)
+          }else{
+            console.log('in else loop 2')
+            null
+          }
+          }
+        }
+
+      }
+    },
+    searchNewId(){
+      this.comments.forEach(element => {
+        if(element.id >= this.newID){
+          this.newID= element.id +1
+        }else{
+          null
+        }
+        console.log('el 1 = ',element.id,'newid = ',this.newID)
+        element.replies.forEach(element2=>{
+        if( element2.id >= this.newID){
+          this.newID= element2.id +1
+        }else{
+
+        }
+        console.log('el 2= ',element2.id,'newid = ',this.newID)
+        })
+      });
     },
     deleteComment(answer) {
       this.isOpenPopupDelete=false
