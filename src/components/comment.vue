@@ -4,7 +4,7 @@
             <img :src="userImage" alt="img">
             <div class="name">{{ name }}</div>
             <span v-if="currentUser.username === name" class="you">you</span>
-            <span class="date">{{ date }}</span>
+            <span class="createdAt">{{ createdAt }}</span>
         </div>
         
         <p class="commentary" v-if="!onEdit"><span v-if="isReply" class="replyingTo">@{{ replyingTo }} </span> {{ content }}</p>
@@ -33,7 +33,7 @@
         
         :name="replie.user.username"
         :content="replie.content"
-        :date="replie.createdAt"
+        :createdAt="replie.createdAt"
         :userImage="replie.user.image.png"
         :score="replie.score"
         :replyingTo="replie.replyingTo"
@@ -53,7 +53,7 @@ import AddComment from "./addComment.vue"
     inject:["mq"],
     components: { AddComment },
     emits: ["delete","sendAddReply","updateContent"],
-    props: ["id", "name", "content", "date", "userImage", "score", "replies", "isReply", "currentUser", "replyingTo"],
+    props: ["id", "name", "content", "createdAt", "userImage", "score", "replies", "isReply", "currentUser", "replyingTo"],
     data() {
         return {
             isPlusActive: false,
@@ -121,7 +121,7 @@ border-radius: 10px;
             border-radius:3px;
             letter-spacing: .5px;
         }
-        .date{
+        .createdAt{
             opacity: .7;
             font-size:.9rem;
         }

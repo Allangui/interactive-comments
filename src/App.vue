@@ -2,7 +2,7 @@
   <Comment v-for="comment in comments"
   :name="comment.user.username"
   :content="comment.content"
-  :date="comment.createdAt"
+  :createdAt="comment.createdAt"
   :userImage="comment.user.image.png"
   :score="comment.score"
   :replies="comment.replies"

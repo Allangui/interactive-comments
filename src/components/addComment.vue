@@ -15,6 +15,10 @@
             return {
                 content: '',
                 forReplyContent : '',
+                createdAt : null,
+                date: '',
+                time: '',
+                timestamp: '',
             }
         },
         mounted () {
@@ -24,15 +28,30 @@
             }else {
                 this.content = ''
             }
+            // TIMESTAMPS
+            this.date = this.printDate();
+            this.time = this.printTime();
+            this.timestamp = this.printTimestamp();
+            console.log('time 1 ' , this.fulldatetime)
+            this.createdAt = this.date.substr(0,5) + ' at ' + this.time.substr(0,5)
         },
         methods: {
+            printDate: function () {
+                return new Date().toLocaleDateString();
+            },
+            printTime: function () {
+                return new Date().toLocaleTimeString();
+            },        
+            printTimestamp: function () {
+                return Date.now();
+            },
             sendAddComment() {
                 if (this.content.length - this.forReplyContent.length > 2){
                     if(!this.onReply){
                         this.$emit('sendAddComment',{
                             "id": null, // Trouver un moyen de faire passer l ID au nouveau commentaire
                             "content": this.content,
-                            "createdAt": "1 second ago",
+                            "createdAt": this.createdAt,
                             "score": 0,
                             "user": {
                                     "image": { 
@@ -50,7 +69,7 @@
                         "obj":{
                             "id": null,
                             "content":this.content,
-                            "createdAt": "1 second ago",
+                            "createdAt": this.createdAt,
                             "score": 0,
                             "replyingTo":this.replyingTo,
                             "user": {
