@@ -1,5 +1,5 @@
 <template>
-    <form :class="onReply ? 'formReply': null ">
+    <form :class="{'formReply': onReply ,'formDek':mq.m}">
         <textarea minlength="3" maxlength="144" required="true" placeholder="Add a comment..."  v-model="content"></textarea>
         <img :src="currentUser.image.png" alt="">
         <button type="submit" class="btnSend" @click.prevent="sendAddComment()">send</button>
@@ -8,6 +8,7 @@
 
 <script>
     export default {
+        inject:["mq"],
         props: ["currentUser","onReply","replyingTo","replyingToId"],
         emits: ["sendAddComment","sendAddReply"],
         data() {
@@ -87,8 +88,8 @@ form{
     border-radius: 10px;
     padding:15px;
     display: grid;
-    grid-column: repeat(2,auto) ;
-    grid-row: repeat(3,auto);
+    grid-template-columns: repeat(2,auto) ;
+    grid-template-rows: repeat(3,auto);
     row-gap: 10px;
     textarea{
         grid-column: span 2;
@@ -96,9 +97,12 @@ form{
         height:60px;
         border-radius: 10px;
         padding:10px;
-        border:2px solid hsl(223, 19%, 93%)  ;
+        border:1px solid hsl(223, 19%, 93%)  ;
         resize:none;
         outline: none;
+        &:focus{
+        border:1px solid hsl(211, 10%, 45%);
+        }
     }
     
     img{
@@ -142,5 +146,23 @@ form{
         
     }
     
+}
+.formDek{
+    grid-template-columns:  auto 1fr auto ;
+    grid-template-rows: repeat(2,auto);
+    column-gap: 15px;
+    textarea{
+        grid-column: 2;
+        grid-row: span 2;
+    }
+    img{
+        grid-column:1 ;
+        grid-row: 1;
+    }
+    .btnSend{
+        grid-column:3 ;
+        grid-row:1 ;
+        width:auto;
+    }
 }
 </style>

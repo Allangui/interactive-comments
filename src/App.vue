@@ -24,6 +24,7 @@ import openPopupDelete from "./components/openPopupDelete.vue"
 import datas from "../data.json"
 
 export default{
+  inject:["mq"],
   components:{
     Comment : comment,
     AddComment : addComment,
@@ -118,13 +119,17 @@ export default{
       
     }
   },
+  mounted () {
+    console.log(this.mq);
+  },
 
 }
 </script>
 
 <style>
 #app {
-  max-width: 350px;
+  max-width: 650px;
+  width: 90vw;
   margin:50px auto;
   font-size:16px;
   font-weight: 400;

@@ -1,5 +1,5 @@
 <template>
-    <main :class="isReply ? 'mainReply': null ">
+    <main :class="{'mainReply': isReply, 'mainDek':mq.m }">
         <div class="topCard">
             <img :src="userImage" alt="img">
             <div class="name">{{ name }}</div>
@@ -8,7 +8,7 @@
         </div>
         
         <p class="commentary" v-if="!onEdit"><span v-if="isReply" class="replyingTo">@{{ replyingTo }} </span> {{ content }}</p>
-        <textarea v-else minlength="3" maxlength="144" required="true" placeholder="Add a comment..."  v-model="editedContent"></textarea>
+        <textarea v-else minlength="3" maxlength="144" required="true" autofocus="true"  placeholder="Add a comment..."  v-model="editedContent"></textarea>
         <div class="counter">
             <svg class="plus" :class="isPlusActive ? 'plusActive' : null" @click=" isPlusActive ? isPlusActive=false : isPlusActive=true,isMinusActive=false" width="11" height="11" xmlns="http://www.w3.org/2000/svg"><path d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" /></svg>
             <span class="score">{{ score + (isPlusActive ? 1 : 0) + (isMinusActive ? -1 : 0)}}</span>
@@ -50,6 +50,7 @@
 <script>
 import AddComment from "./addComment.vue"
     export default {
+    inject:["mq"],
     components: { AddComment },
     emits: ["delete","sendAddReply","updateContent"],
     props: ["id", "name", "content", "date", "userImage", "score", "replies", "isReply", "currentUser", "replyingTo"],
@@ -87,7 +88,9 @@ import AddComment from "./addComment.vue"
 
 main{
 height:auto;
+display: block;
 width:calc(100% - 30px);
+
 background-color: white;
 margin-bottom:20px;
 padding:15px;
@@ -95,6 +98,7 @@ display: grid;
 grid-template-columns: repeat(6,1fr);
 grid-template-rows: repeat(3,auto);
 border-radius: 10px;
+// overflow:scroll;
     .topCard{
         display:flex;
         column-gap: 10px;
@@ -138,10 +142,13 @@ border-radius: 10px;
         height:60px;
         border-radius: 10px;
         padding:10px;
-        border:2px solid hsl(223, 19%, 93%)  ;
+        border:1px solid hsl(223, 19%, 93%)  ;
         resize:none;
         outline: none;
         margin:10px 0;
+        &:focus{
+        border:1px solid hsl(211, 10%, 45%);
+        }
     }
     .counter{
         grid-column: 1/2;
@@ -188,6 +195,7 @@ border-radius: 10px;
         grid-column: 4/span 6;
         grid-row: 3;
         column-gap: 5px;
+        justify-content: flex-end;
         .delete, .edit{
             display: flex;
             align-items:center;
@@ -213,6 +221,7 @@ border-radius: 10px;
         grid-column: 3/span 6;
         grid-row: 3;
         column-gap: 10px;
+        justify-content: space-around;
         .cancel{
             display:flex;
             column-gap: 5px;
@@ -224,6 +233,7 @@ border-radius: 10px;
             cursor: pointer;
             color:hsl(358, 79%, 66%);
             flex-grow:1;
+            justify-content: flex-end;
             &:hover{
                 opacity:.5;
             }
@@ -249,6 +259,7 @@ border-radius: 10px;
     width:calc(95% - 30px);
     margin-left:5%;
     position: relative;
+    
     &:before{
         content:'';
         position:absolute;
@@ -260,5 +271,41 @@ border-radius: 10px;
         
     }
     
+}
+.mainDek{
+    grid-template-columns: auto 1fr auto;
+    column-gap: 15px;
+    .topCard{
+        grid-column: 2;
+        grid-row: 1;
+    }
+    .reply{
+        grid-column: 3;
+        grid-row: 1;
+        justify-content: flex-end;
+    }
+    .commentary{
+        grid-column: 2/span 2;
+        grid-row:2;
+    }
+    .counter{
+        grid-column: 1/2;
+        grid-row: 1 /span 2;
+        flex-direction: column;
+        width:40px;
+        height:90px;
+    }
+    .editAndDelete{
+        grid-column: 3;
+        grid-row: 1;
+    }
+    .cancelAndUpdate{
+        grid-column: 3;
+        grid-row: 3;
+    }
+    textarea{
+        grid-column: 2/span 2;
+        grid-row:2;
+    }
 }
 </style>
