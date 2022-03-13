@@ -19,7 +19,6 @@
         },
         mounted () {
             if(this.onReply){
-                console.log('mounted')
                 this.forReplyContent = '@' + this.replyingTo 
                 this.content = this.forReplyContent 
             }else {
@@ -30,7 +29,6 @@
             sendAddComment() {
                 if (this.content.length - this.forReplyContent.length > 2){
                     if(!this.onReply){
-                        console.log('sendcomment')
                         this.$emit('sendAddComment',{
                             "id": null, // Trouver un moyen de faire passer l ID au nouveau commentaire
                             "content": this.content,
@@ -48,7 +46,6 @@
                         this.content=''
                 }else{
                     this.content = this.content.replace(this.forReplyContent,'')
-                    console.log('sendreply')
                     this.$emit('sendAddReply',{
                         "obj":{
                             "id": null,

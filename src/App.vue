@@ -46,21 +46,16 @@ export default{
       this.comments.push(obj)
     },
     addReply(event){
-      console.log('reply in app',event)
       this.searchNewId()
       event.obj.id = this.newID
       for(let i =0;i<this.comments.length;i++){
         if(this.comments[i].id === event.replyingtoid){
-          console.log('in if loop 1')
           return this.comments[i].replies.push(event.obj)
         }else{
-          console.log('in else loop 1')
           for(let j =0;j<this.comments[i].replies.length;j++){
           if(this.comments[i].replies[j].id === event.replyingtoid){
-            console.log('in if loop 2')
             return this.comments[i].replies.push(event.obj)
           }else{
-            console.log('in else loop 2')
             null
           }
           }
@@ -75,14 +70,12 @@ export default{
         }else{
           null
         }
-        console.log('el 1 = ',element.id,'newid = ',this.newID)
         element.replies.forEach(element2=>{
         if( element2.id >= this.newID){
           this.newID= element2.id +1
         }else{
-
+          null
         }
-        console.log('el 2= ',element2.id,'newid = ',this.newID)
         })
       });
     },
@@ -91,22 +84,18 @@ export default{
       if(answer===true){
         for(let i=0;i<this.comments.length ;i++){
           if (this.currentIdDeleted===this.comments[i].id) {
-            console.log('result 1 : ', this.comments[i].id,'i=',i)
             this.comments.splice(i,1)
             this.currentIdDeleted = null
             return
           } else {
-            console.log('result else 1 : ', this.comments[i].id,'i=',i)
             null
           }
           for(let j=0; j< this.comments[i].replies.length;j++){
             if(this.currentIdDeleted===this.comments[i].replies[j].id){
-              console.log('result 2 ', this.comments[i].replies[j].id ,'i/j=',i,j)
               this.comments[i].replies.splice(j,1)
               this.currentIdDeleted = null
               return
             }else{
-              console.log('result else 2 ', this.comments[i].replies[j].id,'i/j=',i,j)
                 null
             }
           }
@@ -119,10 +108,6 @@ export default{
       
     }
   },
-  mounted () {
-    console.log(this.mq);
-  },
-
 }
 </script>
 
