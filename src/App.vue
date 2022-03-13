@@ -32,7 +32,10 @@ export default{
   },
   data() {
     return {
-      comments: datas.comments,
+      datas : datas,
+      localDatasComments:null,
+      comments: null,
+      localDatasCurrentUser:null,
       currentUser: datas.currentUser,
       isOpenPopupDelete:false,
       currentIdDeleted:null,
@@ -105,8 +108,31 @@ export default{
       }else{
         this.currentIdDeleted = null
       }
-      
+    },
+  },
+  watch: {
+        comments:{
+          handler(newValue){
+            console.log('newval',newValue)
+            localStorage.setItem('comments',JSON.stringify(newValue))
+          },
+          deep:true
+        }
+      },
+  mounted () {
+    if(localStorage.length===0){
+      console.log('before',this.datas.comments);
+    localStorage.setItem('comments',JSON.stringify(this.datas.comments))
+    localStorage.setItem('currentUser',JSON.stringify(this.datas.currentUser))
+
     }
+    // console.log('middle',localStorage.comments);
+    this.localDatasComments= localStorage.getItem('comments')
+    this.comments= JSON.parse(this.localDatasComments)
+    this.localDatasCurrentUser= localStorage.getItem('currentUser')
+    this.currentUser= JSON.parse(this.localDatasCurrentUser)
+    console.log('after comments',this.comments);
+    console.log('after currentuser',this.currentUser);
   },
 }
 </script>
