@@ -11,6 +11,7 @@
   :currentUser="currentUser"
   @delete="isOpenPopupDelete=true , currentIdDeleted= $event"
   @sendAddReply="addReply($event)"
+  @updateContent="comment.content=$event"
   />
   <AddComment :currentUser="currentUser" @sendAddComment="addComment($event)" />
   <OpenPopupDelete v-if="isOpenPopupDelete" @closePopup="deleteComment($event)"/>
